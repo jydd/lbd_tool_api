@@ -1,0 +1,175 @@
+{% extends 'layout/main.html' %}
+{% from 'macros/_macros.html' import render_pagination %}
+
+{% block head %}
+{{ super() }}
+<script src="https://cdn.jsdelivr.net/npm/vue@2.6.10/dist/vue.js"></script>
+{% endblock head %}
+
+{% block content_header %}
+<div class="row page-titles">
+  <div class="col-md-5 col-8 align-self-center">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">首页</a></li>
+      <li class="breadcrumb-item active">账号列表</li>
+    </ol>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block content %}
+<style>
+  .checkbox {
+    margin-top: 0px;
+    height: 20px;
+  }
+</style>
+<div class="row" id="app">
+  <div class="col-sm" style="overflow: hidden;">
+    <div class="card">
+      <div class="card-body">
+        <a href="{{ url_for('netease.create') }}"
+          class="btn btn-danger p-10 waves-effect waves-light">
+          添加账号
+        </a>
+        <div class="table-responsive">
+          <table id="dataTable" class="table table-hover table-bordered m-t-10 text-nowrap">
+            <thead>
+              <tr>
+                <th style="width: 10px">
+                  <div class="checkbox">
+                    <input class="ids" type="checkbox" id="check_box">
+                    <label for="check_box"></label>
+                  </div>
+                </th>
+                <th>账号</th>
+                <th>密码</th>
+                <th width="170">任务数</th>
+                <th width="170">创建时间</th>
+                <th style="width: 60px">操作</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% if model %}
+              {% for item in model %}
+              <tr {% if item.rid %}class="text-muted" {% endif %}>
+                <td>
+                  <div class="checkbox">
+                    <input class="ids" type="checkbox" id="checkbox{{item.id}}"  value="{{item.id}}"
+                      {% if item.rid %}disabled{% endif %} name="ids[]">
+                    <label for="checkbox{{item.id}}"></label>
+                  </div>
+                </td>
+                <td> {{ item.username }} </td>
+                <td>{{ item.pwd }}</td>
+                <td><a href="{{ url_for('netease_tasks.index', id=item.id) }}">{{ item.tasks|length }}</a></td>
+                <td>{{ item.created_at }}</td>
+                <td class="text-nowrap">
+                  <div style="display: flex">
+                    <a href="{{ url_for('netease.update', id=item.id) }}" data-toggle="tooltip" data-original-title="编辑">
+                      <i class="fa fa-pencil text-inverse m-r-10"></i> </a>
+
+                    <a href="javascript:void(0)" onclick="sa_warning(event)" data-toggle="tooltip"
+                      data-original-title="删除">
+                      <span class="fa fa-close text-danger" data-id="{{ item.id }}"></span></a>
+
+                  </div>
+                </td>
+
+              </tr>
+              {% endfor %}
+              {% endif %}
+            </tbody>
+          </table>
+        </div>
+        <div class="row">
+          <div class="col-sm">
+            <div class="btn-group m-b-10 m-r-10" role="group">
+              <button type="button" @click="choose" class="btn btn-secondary">全选/取消</button>
+              <button type="button" @click="submit_delete" class="btn waves-effect waves-light btn-danger">删除</button>
+            </div>
+          </div>
+         
+          <div class="col-sm justify-content-end">
+            {{ render_pagination(pagination) }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    delimiters: ['${', '}'],
+    data: {
+    },
+    created: function () {
+    },
+    methods: {
+      choose: function () {
+        let check_box = $('#check_box')
+        $("input[name='ids[]']:enabled").prop('checked', !check_box.is(':checked'))
+        check_box.prop('checked', !check_box.is(':checked'))
+      },
+      submit_delete: function () {
+        let chk_value = [];
+        $("input[name='ids[]']:checked").each(function () {
+          chk_value.push($(this).val())
+        })
+        if (chk_value.length === 0) {
+          swal("没有选择文章!")
+          return false
+        }
+        swal({
+          title: "您确定?",
+          text: "您确定要删除这账号吗!",
+          type: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#DD6B55",
+          confirmButtonText: "是的, 我确定!",
+          cancelButtonText: "取消操作"
+        }, function () {
+          $.post({
+            url: "{{ url_for('.ajax_delete') }}",
+            data: {
+              'csrf_token': '{{ csrf_token() }}',
+              'ids': JSON.stringify(chk_value)
+            },
+            success: function (result) {
+              if (result.success) {
+                window.location.reload()
+              }
+            }
+          })
+        })
+      }
+    }
+  })
+  $(function () {
+    $('#check_box').click(function () {
+      $("input[name='ids[]']:enabled").prop('checked', this.checked)
+      // $("input[name='ids[]']").prop('checked', this.checked)
+    })
+  })
+  function sa_warning(e) {
+    swal({
+      title: "您确定?",
+      text: "您确定要删除这文章吗，删除后放入回收站!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "是的, 我确定!",
+      cancelButtonText: "取消操作",
+      closeOnConfirm: false
+    }, function () {
+      window.location.href = '/netease/delete/' + e.srcElement.dataset['id']
+    })
+  }
+</script>
+{% endblock scripts %}

@@ -1,0 +1,33 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.tuna.tsinghua.edu.cn/simple/"
+verify_ssl = true
+
+[dev-packages]
+flake8 = "*"
+yapf = "*"
+faker = "*"
+flask-shell-ipython = "*"
+
+[packages]
+flask = "*"
+flask-migrate = "*"
+python-dotenv = "*"
+flask-login = "*"
+flask-wtf = "*"
+pymysql = "*"
+flask-cors = "*"
+webargs = "*"
+bcrypt = "*"
+gunicorn = "*"
+requests = "*"
+redis = "*"
+flask-redis = "*"
+oss2 = "*"
+gevent = "*"
+wechatpy = {extras = ["cryptography"],version = "*"}
+pyexecjs = "*"
+selenium = "*"
+
+[requires]
+python_version = "3.6"

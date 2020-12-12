@@ -1,0 +1,18 @@
+<div class="col" style="flex:0 0 300px;">
+  <a href="{{ url_for('users.create') }}" class="btn btn-primary btn-block margin-bottom m-b-10">
+    添加用户
+  </a>
+  <div class="card inbox-panel">
+    <div class="card-body" style="border-bottom:1px solid #f2f4f8">
+      <h4 class="card-title m-b-0">用户角色</h4>
+    </div>
+    <ul class="list-group list-group-flush">
+      {% for item in role %}
+      <li class="list-group-item {% if request.args.get('rid') == '{}'.format(item.id) %} active {% endif %}">
+        <a href="{{ url_for('users.index', county=request.args.get('county'), rid=item.id) }}"><i class="fa fa-inbox"></i> {{ item.nickname }} ({{ item.name }})
+        </a>
+      </li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>

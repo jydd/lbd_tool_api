@@ -1,0 +1,121 @@
+{% extends 'layout/main.html' %}
+{% from 'macros/_macros.html' import render_pagination %}
+
+{% block content_header %}
+<div class="row page-titles">
+  <div class="col-md-5 col-8 align-self-center">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">首页</a></li>
+      <li class="breadcrumb-item"><a href="javascript:void(0)">用户管理</a></li>
+      <li class="breadcrumb-item active">列表</li>
+    </ol>
+  </div>
+</div>
+{% endblock %}
+
+
+{% block content %}
+<div class="row" id="app">
+  {% include 'admin/users/_left.html' %}
+  <div class="col" style="overflow: hidden">
+    <div class="card">
+      <div class="card-header with-border">
+        <div class="dataTables_filter">
+          <label>查询用户:<input id="search" type="search" class="" placeholder="输入手机号码查询"></label>
+        </div>
+        <h3 class="card-title">用户列表</h3>
+      </div>
+      <!-- /.box-header -->
+      <div class="card-body">
+        <div class="table-responsive">
+        <table class="table table-bordered table-striped text-nowrap">
+          <thead>
+            <tr>
+              <th style="width: 10px">#</th>
+              <th>账号</th>
+              <th>真实姓名</th>
+              <th>权限</th>
+              <th>最后登陆IP</th>
+              <th>最近登陆</th>
+              <th>状态</th>
+              <th style="width: 80px">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% if model %}
+            {% for item in model %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ item.username }}</td>
+              <td>{{ item.nickname }}</td>
+              <td>{{ item.role.nickname }}</td>
+              <td>{{ item.last_ip }}</td>
+              <td>{{ item.last_login_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+              <td>
+                <button type="button" class="btn btn-{{ item.status| user_status_button }} dropdown-toggle btn-sm" data-toggle="dropdown"
+                  aria-haspopup="true" aria-expanded="false">
+                  {{ item.status|user_status }}
+                </button>
+                <div class="dropdown-menu" x-placement="bottom-start">
+                  <a class="dropdown-item" href="{{ url_for('users.status', id=item.id, status=100) }}">已审核</a>
+                  <a class="dropdown-item" href="{{ url_for('users.status', id=item.id, status=101) }}">未审核</a>
+                </div>
+              </td>
+              <td class="text-nowrap">
+                <div style="display: flex">
+                  <a href="{{ url_for('users.update', id=item.id) }}" data-toggle="tooltip" data-original-title="编辑">
+                    <i class="fa fa-pencil text-inverse m-r-10"></i>
+                  </a>
+                  <a href="javascript:void(0)" onclick="sa_delete(event)" data-toggle="tooltip" data-original-title="删除">
+                    <span class="fa fa-close text-danger" data-id="{{ item.id }}"></span>
+                  </a>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+          </tbody>
+        </table>
+        </div>
+        <div class="row">
+          <div class="col-sm justify-content-end">
+            {{ render_pagination(pagination) }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript">
+  $('#search').bind('keydown', function (event) {
+    var event = window.event || arguments.callee.caller.arguments[0];
+    if (event.keyCode == 13) {
+      let tel = $('#search').val()
+      if (!(/^1[35678]\d{9}$/.test(tel))) {
+        swal("你输入的不是手机号码")
+        return false
+      }
+      window.location.href=`/users/?search=${tel}`
+    }
+  });
+  function sa_delete(e) {
+    swal({
+      title: "您确定?",
+      text: "您确定要删除这用户吗!",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#DD6B55",
+      confirmButtonText: "是的, 我确定!",
+      cancelButtonText: "取消操作",
+      closeOnConfirm: false
+    }, function () {
+      window.location.href='/users/delete/' + e.srcElement.dataset['id']
+    })
+  }
+</script>
+{% endblock scripts %}

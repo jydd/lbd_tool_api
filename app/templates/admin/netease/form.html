@@ -1,0 +1,39 @@
+{% extends 'layout/main.html' %}
+{% from 'macros/_macros.html' import form_field %}
+
+{% block content_header %}
+<div class="row page-titles">
+  <div class="col-md-5 col-8 align-self-center">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/">首页</a></li>
+      <li class="breadcrumb-item active">添加设备</li>
+    </ol>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+
+<form class="form-material" method="post" action="">
+  <div class="row" style="flex-direction: row-reverse;">
+
+    <div class="col-sm">
+      <div class="card">
+        <!-- /.box-header -->
+        <div class="card-body">
+          {{ form.csrf_token }}
+          {{ form_field(form.username, class_='form-control')}}
+          {{ form_field(form.password, class_='form-control')}}
+          {{ form_field(form.status, class_='form-control')}}
+
+          {{ form.submit(class_='btn btn-primary') }}
+        </div>
+      </div>
+    </div>
+
+
+
+  </div>
+</form>
+
+{% endblock %}

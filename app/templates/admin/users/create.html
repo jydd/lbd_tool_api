@@ -1,0 +1,38 @@
+{% extends 'layout/main.html' %}
+{% from 'macros/_macros.html' import form_field %}
+
+{% block content_header %}
+<div class="row page-titles">
+  <div class="col-md-5 col-8 align-self-center">
+    <h3 class="text-themecolor m-b-0 m-t-0">创建用户</h3>
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="javascript:void(0)">首页</a></li>
+      <li class="breadcrumb-item active">创建用户</li>
+    </ol>
+  </div>
+</div>
+{% endblock %}
+
+
+
+
+{% block content %}
+<div class="card">
+  <!-- /.box-header -->
+  <div class="card-body">
+
+      <form class="form-material" method="post" action="">
+        {{ form.csrf_token }}
+        <input id="thumb" name="thumb" type="hidden">
+        {{ form_field(form.username, placeholder='用户名', class_='form-control')}}
+        {{ form_field(form.password, placeholder='密码', class_='form-control')}}
+        {{ form_field(form.password2, placeholder='确认密码', class_='form-control')}}
+        {{ form_field(form.nickname, placeholder='昵称', class_='form-control')}}
+        {{ form_field(form.role_id, class_='form-control')}}
+        {{ form_field(form.cid, class_='form-control')}}
+        {{ form.submit(class_='btn btn-primary') }}
+      </form>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block head %}
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Favicon icon -->
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='assets/images/favicon.png') }}">
+    <title>{{ config.get('FLASK_WEB_NAME', '用户中心') }}</title>
+    <!-- Bootstrap Core CSS -->
+    <link href="{{ url_for('static', filename='assets/plugins/bootstrap/css/bootstrap.min.css')}}" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='material/css/style.css') }}" rel="stylesheet">
+    <!-- You can change the theme colors from here -->
+    <link href="{{ url_for('static', filename='material/css/colors/blue.css') }}" id="theme" rel="stylesheet">
+
+    <link href="{{ url_for('static', filename='assets/plugins/sweetalert/sweetalert.css') }}" rel="stylesheet" type="text/css">
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    {% endblock head %}
+</head>
+
+<body class="fix-header card-no-border">
+    <div class="preloader">
+        <svg class="circular" viewBox="25 25 50 50">
+            <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" /> </svg>
+    </div>
+    <div id="main-wrapper">
+        {% block header %}
+        <header class="topbar">
+            <nav class="navbar top-navbar navbar-expand-md navbar-light">
+                <!-- ============================================================== -->
+                <!-- Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-header">
+                    <a class="navbar-brand" href="/">
+                        <!-- Logo icon -->
+                        <b>
+                            <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                            <!-- Dark Logo icon -->
+                            <img src="{{ url_for('static', filename='assets/images/logo-icon.png') }}" alt="homepage" class="dark-logo" />
+                            <!-- Light Logo icon -->
+                            <img src="{{ url_for('static', filename='assets/images/logo-light-icon.png') }}" alt="homepage" class="light-logo" />
+                        </b>
+                        <!--End Logo icon -->
+                        <!-- Logo text -->
+                        <span>
+                         <!-- dark Logo text -->
+                         <img src="{{ url_for('static', filename='assets/images/logo-text.png') }}" alt="homepage" class="dark-logo" />
+                         <!-- Light Logo text -->    
+                         <img src="{{ url_for('static', filename='assets/images/logo-light-text.png') }}" class="light-logo" alt="homepage" />
+                        </span> </a>
+                </div>
+                <!-- ============================================================== -->
+                <!-- End Logo -->
+                <!-- ============================================================== -->
+                <div class="navbar-collapse">
+                    <!-- ============================================================== -->
+                    <!-- toggle and nav items -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav mr-auto mt-md-0">
+                        <!-- This is  -->
+                        <li class="nav-item"> <a class="nav-link nav-toggler hidden-md-up text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="mdi mdi-menu"></i></a> </li>
+                        <li class="nav-item"> <a class="nav-link sidebartoggler hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-menu"></i></a> </li>
+                        <!-- ============================================================== -->
+                        <!-- Search -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item hidden-sm-down search-box">
+                            <a class="nav-link hidden-sm-down text-muted waves-effect waves-dark" href="javascript:void(0)"><i class="ti-search"></i></a>
+                            <form class="app-search">
+                                <input type="text" class="form-control" placeholder="Search & enter"> <a class="srh-btn"><i class="ti-close"></i></a> </form>
+                        </li>
+                        
+                        
+                    </ul>
+                    <!-- ============================================================== -->
+                    <!-- User profile and search -->
+                    <!-- ============================================================== -->
+                    <ul class="navbar-nav my-lg-0">
+                        <!-- ============================================================== -->
+                        <!-- Comment -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="mdi mdi-message"></i>
+                                <div class="notify"> <span class="heartbit"></span> <span class="point"></span> </div>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right mailbox scale-up">
+                                <ul>
+                                    <li>
+                                        <div class="drop-title">退知</div>
+                                    </li>
+                                    <li>
+                                        <div class="message-center">
+                                            <!-- Message -->
+                                            <a href="#">
+                                                <div class="btn btn-danger btn-circle"><i class="fa fa-link"></i></div>
+                                                <div class="mail-contnet">
+                                                    <h5>Luanch Admin</h5> 
+                                                    <span class="mail-desc">Just see the my new admin!</span> 
+                                                    <span class="time">9:30 AM</span> 
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <a class="nav-link text-center" href="javascript:void(0);"> <strong>检查所有通知</strong> <i class="fa fa-angle-right"></i> </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                        <!-- ============================================================== -->
+                        <!-- End Comment -->
+                        <!-- ============================================================== -->
+                        
+                        <!-- ============================================================== -->
+                        <!-- Profile -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><img src="{{ url_for('static', filename='assets/images/users/1.jpg') }}" alt="user" class="profile-pic" /></a>
+                            <div class="dropdown-menu dropdown-menu-right scale-up">
+                                <ul class="dropdown-user">
+                                    <li>
+                                        <div class="dw-user-box">
+                                            <div class="u-img"><img src="{{ url_for('static', filename='assets/images/users/1.jpg') }}" alt="user"></div>
+                                            <div class="u-text">
+                                                <h4>{{ current_user.nickname }}</h4>
+                                                <p class="text-muted">varun@gmail.com</p><a href="profile.html" class="btn btn-rounded btn-danger btn-sm">显示信息</a></div>
+                                        </div>
+                                    </li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="#"><i class="ti-settings"></i> 账号设置</a></li>
+                                    <li role="separator" class="divider"></li>
+                                    <li><a href="{{ url_for('auth.logout') }}"><i class="fa fa-power-off"></i> 退出</a></li>
+                                </ul>
+                            </div>
+                        </li>
+                        <!-- ============================================================== -->
+                        <!-- Language -->
+                        <!-- ============================================================== -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle text-muted waves-effect waves-dark" href="" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i class="flag-icon flag-icon-us"></i></a>
+                            <div class="dropdown-menu dropdown-menu-right scale-up"> <a class="dropdown-item" href="#"><i class="flag-icon flag-icon-in"></i> India</a> <a class="dropdown-item" href="#"><i class="flag-icon flag-icon-fr"></i> French</a> <a class="dropdown-item" href="#"><i class="flag-icon flag-icon-cn"></i> China</a> <a class="dropdown-item" href="#"><i class="flag-icon flag-icon-de"></i> Dutch</a> </div>
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </header>
+        {% endblock %}
+        
+        {% include 'layout/left.html' %}
+
+        <div class="page-wrapper">
+            <div class="container-fluid">
+                {% block content_header %}
+                <div class="row page-titles">
+                    <div class="col-md-5 col-8 align-self-center">
+                        <ol class="breadcrumb">
+                            <li class="breadcrumb-item"><a href="javascript:void(0)">Home</a></li>
+                            <li class="breadcrumb-item active">Dashboard</li>
+                        </ol>
+                    </div>
+                </div>
+                {% endblock %}
+                {% with messages = get_flashed_messages(with_categories=True) %}
+                    {% if messages %}
+                        {% for message in messages %}
+                            <div class="alert alert-{{ message[0]}}"> <i class="ti-user"></i> {{ message[1]}}
+                                <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <span aria-hidden="true">×</span>
+                                </button>
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+                {% block content %}
+                {% endblock %}
+            </div>
+            <footer class="footer">
+                工具集管理平台
+            </footer>
+        </div>
+    </div>
+    {% block scripts %}
+    <script src="{{ url_for('static', filename='assets/plugins/jquery/jquery.min.js') }}"></script>
+    <!-- Bootstrap tether Core JavaScript -->
+    <script src="{{ url_for('static', filename='assets/plugins/bootstrap/js/popper.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+    <!-- slimscrollbar scrollbar JavaScript -->
+    <script src="{{ url_for('static', filename='material/js/jquery.slimscroll.js') }}"></script>
+    <!--Wave Effects -->
+    <script src="{{ url_for('static', filename='material/js/waves.js') }}"></script>
+    <!--Menu sidebar -->
+    <script src="{{ url_for('static', filename='material/js/sidebarmenu.js') }}"></script>
+    <!--stickey kit -->
+    <script src="{{ url_for('static', filename='assets/plugins/sticky-kit-master/dist/sticky-kit.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/plugins/sparkline/jquery.sparkline.min.js') }}"></script>
+    <!--Custom JavaScript -->
+    <script src="{{ url_for('static', filename='material/js/custom.min.js') }}"></script>
+
+    <script src="{{ url_for('static', filename='assets/plugins/sweetalert/sweetalert.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='assets/plugins/sweetalert/jquery.sweet-alert.custom.js') }}"></script>
+
+    <script type="text/javascript">
+
+        window.setTimeout(function(){
+            $('[data-dismiss="alert"]').alert('close');
+        },7000);
+    </script>
+
+    {% endblock scripts %}
+</body>
+
+</html>

@@ -1,0 +1,169 @@
+{% extends 'layout/main.html' %}
+
+{% block head %}
+{{ super() }}
+<script src="https://cdn.jsdelivr.net/npm/vue"></script>
+<style>
+  .d-box span {
+    padding-right:10px;
+  }
+  .d-box span b{
+    color: red;
+  }
+</style>
+{% endblock head %}
+
+
+{% block content_header %}
+<div class="row page-titles">
+  <div class="col-md-5 col-8 align-self-center">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="javascript:void(0)">首页</a></li>
+    </ol>
+  </div>
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="app">
+<div class="row" v-if="meta">
+  <!-- Column -->
+  <div class="col-lg-4 col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex flex-row">
+          <div class="round round-lg align-self-center round-info"><i class="ti-wallet"></i></div>
+          <div class="m-l-10 align-self-center">
+            <h3 class="m-b-0 font-light">${meta.member_count}</h3>
+            <h5 class="text-muted m-b-0">总共票数</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Column -->
+  <!-- Column -->
+  <div class="col-lg-4 col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex flex-row">
+          <div class="round round-lg align-self-center round-primary"><i class="mdi mdi-cart-outline"></i></div>
+          <div class="m-l-10 align-self-center">
+            <h3 class="m-b-0 font-lgiht">${meta.residence_count}</h3>
+            <h5 class="text-muted m-b-0">住宅票数</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Column -->
+  <!-- Column -->
+  <!--
+
+  <div class="col-lg-3 col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex flex-row">
+          <div class="round round-lg align-self-center round-danger"><i class="mdi mdi-bullseye"></i></div>
+          <div class="m-l-10 align-self-center">
+            <h3 class="m-b-0 font-lgiht">${meta.give_up_member_count}</h3>
+            <h5 class="text-muted m-b-0">弃票数</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  -->
+  <!-- Column -->
+  <!-- Column -->
+  <div class="col-lg-4 col-md-6">
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex flex-row">
+          <div class="round round-lg align-self-center round-warning"><i class="mdi mdi-cellphone-link"></i></div>
+          <div class="m-l-10 align-self-center">
+            <h3 class="m-b-0 font-lgiht">${meta.store_count}</h3>
+            <h5 class="text-muted m-b-0">商铺票数</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Column -->
+</div>
+
+
+<div class="alert alert-success d-box">
+  议事规则/管理规约:
+  <span>同意: <b>${meta.draft_1}</b> </span>
+  <span>反对: <b>${meta.draft_2}</b></span>
+  <span>随大多数: <b>${meta.draft_4}</b></span>
+  <span>未参与: <b>${meta.draft_0}</b> </span>
+</div>
+
+<div class="alert alert-success d-box">
+  候选人: <span>已投票数: <b>${meta.use_member_count}</b></span>
+  <span>未投票数: <b>${meta.not_use_member_count}</b> </span>
+</div>
+<div class="row">
+<div class="col-sm" style="overflow: hidden;">
+    <div class="card">
+      <div class="card-body">
+        <div class="table-responsive">
+          <table id="dataTable" class="table table-hover table-bordered m-t-10 text-nowrap">
+            <thead>
+              <tr>
+                
+                <th width="1">ID</th>
+                <th>姓名</th>
+                <th>房号</th>
+                <th>同意票数</th>
+                <th>反对票数</th>
+                <th>排行</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in sort_players" :key="index">
+
+                <td> ${item.id} </td>
+                <td> ${item.name} </td>
+                <td> ${item.h_num} </td>
+                <td> ${item.approve} </td>
+                <td> ${item.oppose} </td>
+                <td> ${index + 1} </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+{{ super() }}
+<script type="text/javascript">
+  var app = new Vue({
+    el: '#app',
+    delimiters: ['${', '}'],
+    data: {
+      players: [],
+      meta: null
+    },
+    computed: {
+      sort_players () {
+        return this.players.sort((a, b) => b.approve - a.approve)
+      }
+    },
+    created: function () {
+      this.init_data()
+    },
+    methods: {
+      init_data: function () {
+      }
+    }
+  })
+</script>
+{% endblock scripts %}
